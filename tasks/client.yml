@@ -1,0 +1,42 @@
+---
+- name: Create tls location
+  when: bareos_tls_path is defined
+  ansible.windows.win_file: 
+    path: "{{ item }}"
+    state: directory
+  with_items: "{{ bareos_tls_path_win }}"
+
+- name: Configure bareos-fd client
+  no_log: true
+  ansible.windows.win_template:
+    src: client.conf.j2
+    dest: C:\ProgramData\Bareos\bareos-fd.d\client\{{ item.name }}.conf
+  with_items: "{{ bareos_fd.client }}"
+  notify:
+    - restart bareos-fd service
+
+- name: Remove unmanaged bareos-fd client configurations
+  ansible.windows.win_file:
+    path: C:\ProgramData\Bareos\bareos-fd.d\client\{{ item }}
+    state: absent
+  with_items:
+    - myself.conf.orig
+    - myself.conf
+  notify:
+    - restart bareos-fd service
+
+- name: Configure Windows firewall for bareos-fd input connections
+  community.windows.win_firewall_rule:
+    name: Bareos backup client (bareos-fd) access
+    program: C:\Program Files\Bareos\bareos-fd.exe
+    localport: "{{ item.fdport | default(9102) }}"
+    action: allow
+    direction: in
+    protocol: tcp
+    profiles: 
+      - private
+      - public
+      - domain
+    state: present
+    enabled: true
+  with_items: "{{ bareos_fd.client }}"

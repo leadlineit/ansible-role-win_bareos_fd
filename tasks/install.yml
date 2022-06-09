@@ -1,0 +1,12 @@
+---
+- name: Install Bareos File Daemon x64 on Windows OS
+  ansible.windows.win_package:
+    path: "{{ item }}"
+    product_id: Bareos
+    provider: registry
+    arguments: /S
+    state: present
+  with_items:
+    - "https://download.bareos.org/bareos/release/{{ bareos_release }}/windows/winbareos-{{ bareos_release }}.0.0-release-64-bit.exe"
+  notify:
+    - restart bareos-fd service

@@ -1,0 +1,14 @@
+#{{ ansible_managed }}
+Client {
+    Name = {{ item.name }}
+    Description = "{{ item.description | default(item.name) }}"
+    FDport = {{ item.fdport | default("9102") }}
+    Maximum Concurrent Jobs = 20
+{% if item.tls_enable is defined %}
+    TLS Enable = {{ item.tls_enable }}
+    TLS Require = {{ item.tls_enable }}
+    TLS CA Certificate File = {{ bareos_tls_path_win }}/CA.crt
+    TLS Certificate = {{ bareos_tls_path_win}}/{{ item.name }}.crt
+    TLS Key = {{ bareos_tls_path_win }}/{{ item.name }}.key
+{% endif %}
+}

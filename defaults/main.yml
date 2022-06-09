@@ -1,0 +1,27 @@
+---
+bareos_release: 21
+bareos_tls_path_win: C:\ProgramData\Bareos\tls
+bareos_tls_certs: your.bareos.dir.com
+bareos_tls_path: /etc/bareos/tls
+bareos_server: you.bareos.dir.server
+
+bareos_fd:
+  director:
+    - name: your-dir
+      description: Director, who is permitted to contact this file daemon.
+      password: DIRAver@gEStr0ngPaSSw0rd
+      tls_enable: "yes"
+    - name: your-mon
+      description: Restricted Director monitor description
+      password: MONAver@gEStr0ngPaSSw0rd
+      monitor: "yes"
+      tls_enable: "yes"
+  client:
+    - name: your-client
+      description: Your Bareos client
+      fdport: 9102
+      tls_enable: "yes"
+  messages:
+    - name: your-messages
+      description: Messages description
+      server: your-dir

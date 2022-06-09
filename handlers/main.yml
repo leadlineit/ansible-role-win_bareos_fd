@@ -1,0 +1,12 @@
+---
+- name: restart bareos-fd service
+  ansible.windows.win_service:
+    name: bareos-fd
+    state: restarted
+
+- name: restart bareos-dir service
+  become: true
+  ansible.builtin.service:
+    name: bareos-dir
+    state: restarted
+  delegate_to: "{{ bareos_server }}"

@@ -1,0 +1,21 @@
+galaxy_info:
+  role_name: win_bareos_fd
+  namespace: leadlineit
+  author: Artem Kasianchuk
+  description: Install and configure Bareos File Daemon on Windows OS
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Windows
+      versions:
+        - 2022
+        - 2019
+        - 2016
+        - 10
+        - 8
+  galaxy_tags:
+    - system
+    - windows
+    - backup
+    - bareos
+    - filedaemon

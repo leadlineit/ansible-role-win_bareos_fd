@@ -1,0 +1,13 @@
+---
+- name: Remote configure bareos-dir filesets for client
+  become: true
+  delegate_to: "{{ bareos_server }}"
+  ansible.builtin.template:
+    src: fileset_dir.conf.j2
+    dest: /etc/bareos/bareos-dir.d/fileset/{{ item.name }}.conf
+    mode: '0640'
+    owner: bareos
+    group: bareos
+  with_items: "{{ bareos_dir.fileset }}"
+  notify:
+    - restart bareos-dir service

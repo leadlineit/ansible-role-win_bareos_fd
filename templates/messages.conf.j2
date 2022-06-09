@@ -1,0 +1,6 @@
+#{{ ansible_managed }}
+Messages {
+    Name = {{ item.name }}
+    Description = "{{ item.description | default(item.name) }}"
+    Director = {{ item.server }} = all
+}

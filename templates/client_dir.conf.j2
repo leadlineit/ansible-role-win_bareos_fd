@@ -1,0 +1,36 @@
+#{{ ansible_managed }}
+Client {
+    Name = {{ item.name }}
+    Description = "{{ item.description | default(item.name) }}"
+    Address = {{ item.address }}
+    FDPort = {{ item.fdport | default("9102") }}
+    File Retention = 15 days
+    Auto Prune = yes
+    Password = "{{ item.password | default() }}"
+    Passive = "{{ item.passive | default("no") }}"
+{% if item.tls_enable is defined %}
+    TLS Enable = {{ item.tls_enable }}
+    TLS Require = {{ item.tls_enable }}
+    TLS CA Certificate File = {{ bareos_tls_path }}/CA.crt
+    TLS Certificate = {{ bareos_tls_path }}/{{ bareos_tls_certs }}.crt
+    TLS Key = {{ bareos_tls_path }}/{{ bareos_tls_certs }}.key
+{% endif %}
+}
+
+{% if item.jobs is defined %}
+{% for j in item.jobs %}
+
+Job {
+    Name = "{{ j.name }}"
+    Description = "{{ j.description | default(j.name) }}"
+    Client = {{ j.client }}
+    JobDefs = {{ j.jobdef }}
+    Enabled = yes
+    Run Script {
+       Console = ".bvfs_update jobid=%i"
+       RunsWhen = After
+       RunsOnClient = No
+    }
+}
+{% endfor %}
+{% endif %}

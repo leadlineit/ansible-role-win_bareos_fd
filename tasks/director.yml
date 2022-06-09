@@ -1,0 +1,21 @@
+---
+- name: Configure bareos-fd director
+  no_log: true
+  ansible.windows.win_template:
+    src: director.conf.j2
+    dest: C:\ProgramData\Bareos\bareos-fd.d\director\{{ item.name }}.conf
+  with_items: "{{ bareos_fd.director }}"
+  notify:
+    - restart bareos-fd service
+
+- name: Remove unmanaged bareos-fd director configurations
+  ansible.windows.win_file:
+    path: C:\ProgramData\Bareos\bareos-fd.d\director\{{ item }}
+    state: absent
+  with_items:
+    - bareos-dir.conf.orig
+    - bareos-mon.conf.orig
+    - bareos-dir.conf
+    - bareos-mon.conf
+  notify:
+    - restart bareos-fd service
