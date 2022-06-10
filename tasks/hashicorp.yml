@@ -42,11 +42,10 @@
     label:
       - "{{ item.item.cname }}"
 
-- name: Save client certificate to Bareos TLS directory (bareos_tls_path)
+- name: Save client certificate to Bareos TLS directory (bareos_tls_path_win)
   ansible.windows.win_copy:
     content: "{{ item.certificate }}"
     dest: "{{ bareos_tls_path_win }}/{{ item.cname }}.crt"
-    mode: '0600'
   when: 
     - item is defined
     - item.status == 404
@@ -56,11 +55,10 @@
     label: 
       - "{{ item.cname }}.crt"
 
-- name: Save client private key to Bareos TLS directory (bareos_tls_path)
+- name: Save client private key to Bareos TLS directory (bareos_tls_path_win)
   ansible.windows.win_copy:
     content: "{{ item.priv_key }}"
     dest: "{{ bareos_tls_path_win }}/{{ item.cname }}.key"
-    mode: '0600'
   when: 
     - item is defined
     - item.status == 404
