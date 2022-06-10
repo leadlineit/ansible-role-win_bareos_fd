@@ -73,7 +73,8 @@ jobs:
 
   release:
     name: Release
-    # needs:
+    needs:
+      - lint
     #   - test
     runs-on: ubuntu-latest
     steps:
