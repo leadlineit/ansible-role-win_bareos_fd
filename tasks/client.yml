@@ -10,7 +10,7 @@
   no_log: true
   ansible.windows.win_template:
     src: client.conf.j2
-    dest: C:\ProgramData\Bareos\bareos-fd.d\client\{{ item.name }}.conf
+    dest: C:\ProgramData\Bareos\bareos-fd.d\client\{{ item.name }}-fd.conf
   with_items: "{{ bareos_fd.client }}"
   notify:
     - restart bareos-fd service
@@ -25,9 +25,15 @@
   notify:
     - restart bareos-fd service
 
-- name: Configure Windows firewall for bareos-fd input connections
+- name: Remove default Windows firewall rule for bareos-fd input connections
   community.windows.win_firewall_rule:
     name: Bareos backup client (bareos-fd) access
+    direction: in
+    state: absent
+
+- name: Configure Windows firewall for bareos-fd input connections
+  community.windows.win_firewall_rule:
+    name: Bareos backup client ("{{ item.name }}") access
     program: C:\Program Files\Bareos\bareos-fd.exe
     localport: "{{ item.fdport | default(9102) }}"
     action: allow

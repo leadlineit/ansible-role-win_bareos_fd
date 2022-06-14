@@ -58,15 +58,19 @@ Variable for this (optional too):
     clients:
       - name: host1.client1
         client: client1
+        role: role1
         ttl: 24h
       - name: host2.client1
         client: client1
+        role: role1
         ttl: 18h
       - name: host01.client2
         client: client2
+        role: client2
         ttl: 12h
       - name: host02.client2
         client: client2
+        role: client2
         ttl: 96h
 ```
 
@@ -93,7 +97,9 @@ bareos_dir:
         - name: client-job2
           description: Job2 for client
           client: client.name.com
-          jobdef: your-jobdefs2
+          pool: your-pool
+          fileset: "your-fileset"
+          schedule: "your-schedule"
 ```
 
 Dependencies

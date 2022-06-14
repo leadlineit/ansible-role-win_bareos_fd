@@ -11,7 +11,7 @@
 
 - name: Create list for status code
   ansible.builtin.set_fact:
-    stat_list: "{{ stat_list | default([]) + [ { 'cname': item.item.name, 'status': item.status_code, 'client': item.item.client, 'ttl': item.item.ttl } ] }}"
+    stat_list: "{{ stat_list | default([]) + [ { 'cname': item.item.name, 'status': item.status_code, 'client': item.item.client, 'role': item.item.role, 'ttl': item.item.ttl } ] }}"
   with_items: "{{ cnout.results }}"
   loop_control:
     label: 
@@ -20,7 +20,7 @@
 
 - name: Generate client certificate's with Hashicorp Vault
   ansible.windows.win_uri:
-    url: "{{ bareos_fd.hashicorp_vault.address }}/v1/{{ bareos_fd.hashicorp_vault.path }}/issue/{{ item.client }}"
+    url: "{{ bareos_fd.hashicorp_vault.address }}/v1/{{ bareos_fd.hashicorp_vault.path }}/issue/{{ item.role }}"
     url_method: POST
     headers:
       X-Vault-Token: "{{ bareos_fd.hashicorp_vault.token }}"

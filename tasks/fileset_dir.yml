@@ -1,5 +1,6 @@
 ---
 - name: Remote configure bareos-dir filesets for client
+  no_log: true
   become: true
   delegate_to: "{{ bareos_server }}"
   ansible.builtin.template:

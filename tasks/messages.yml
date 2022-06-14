@@ -1,18 +1,18 @@
 ---
-- name: Remove unmanaged bareos-fd messages configurations
-  ansible.windows.win_file:
-    path: C:\ProgramData\Bareos\bareos-fd.d\messages\{{ item }}
-    state: absent
-  with_items:
-    - Standart.conf
-    - Standart.conf.orig
-  notify:
-    - restart bareos-fd service
-
 - name: Configure bareos-fd messages
   ansible.windows.win_template:
     src: messages.conf.j2
     dest: C:\ProgramData\Bareos\bareos-fd.d\messages\{{ item.name }}.conf
   with_items: "{{ bareos_fd.messages }}"
+  notify:
+    - restart bareos-fd service
+
+- name: Remove unmanaged bareos-fd messages configurations
+  ansible.windows.win_file:
+    path: C:\ProgramData\Bareos\bareos-fd.d\messages\{{ item }}
+    state: absent
+  with_items:
+    - Standard.conf
+    - Standard.conf.orig
   notify:
     - restart bareos-fd service
