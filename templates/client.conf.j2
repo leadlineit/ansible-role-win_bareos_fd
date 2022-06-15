@@ -4,7 +4,7 @@ Client {
     Description = "{{ item.description | default(item.name) }}"
     FDport = {{ item.fdport | default("9102") }}
     Maximum Concurrent Jobs = 20
-    Plugin Directory = C:\Program Files\Bareos\Plugins
+    Plugin Directory = "C:\\Program Files\\Bareos\\Plugins"
     Plugin Names = "mssqlvdi"
 {% if item.tls_enable is defined %}
     TLS Enable = {{ item.tls_enable }}
