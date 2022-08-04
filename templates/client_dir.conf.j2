@@ -6,6 +6,7 @@ Client {
     FDPort = {{ item.fdport | default("9102") }}
     File Retention = 15 days
     Auto Prune = yes
+    Maximum Concurrent Jobs = 20
     Password = "{{ item.password | default() }}"
     Passive = "{{ item.passive | default("no") }}"
 {% if item.tls_enable is defined %}
