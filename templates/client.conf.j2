@@ -3,7 +3,7 @@ Client {
     Name = {{ item.name }}-fd
     Description = "{{ item.description | default(item.name) }}"
     FDport = {{ item.fdport | default("9102") }}
-    Maximum Concurrent Jobs = 20
+    Maximum Concurrent Jobs = {{ item.max_jobs | default("20") }}
     Plugin Directory = "C:\\Program Files\\Bareos\\Plugins"
     Plugin Names = "mssqlvdi"
 {% if item.tls_enable is defined %}

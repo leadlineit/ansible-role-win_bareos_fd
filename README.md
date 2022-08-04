@@ -37,6 +37,7 @@ bareos_fd:
     - name: your-client
       description: Your Bareos client
       fdport: 9102
+      max_jobs: 20
       tls_enable: "yes"
   messages:
     - name: your-messages
@@ -87,6 +88,7 @@ bareos_dir:
       description: Your client configuration
       address: 10.0.0.1
       fdport: 9102
+      max_jobs: 20
       passive: "yes"
       tls_enable: "yes"
       jobs:

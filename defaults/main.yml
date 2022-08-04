@@ -20,6 +20,7 @@ bareos_fd:
     - name: your-client
       description: Your Bareos client
       fdport: 9102
+      max_jobs: 20
       tls_enable: "yes"
   messages:
     - name: your-messages
