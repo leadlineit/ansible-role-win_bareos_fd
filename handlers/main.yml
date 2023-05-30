@@ -1,10 +1,10 @@
 ---
-- name: restart bareos-fd service
+- name: Restart bareos-fd service
   ansible.windows.win_service:
     name: bareos-fd
     state: restarted
 
-- name: reload bareos-dir service
+- name: Reload bareos-dir service
   become: true
   ansible.builtin.service:
     name: bareos-dir

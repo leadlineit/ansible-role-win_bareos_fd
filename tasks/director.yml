@@ -6,7 +6,7 @@
     dest: C:\ProgramData\Bareos\bareos-fd.d\director\{{ item.name }}.conf
   with_items: "{{ bareos_fd.director }}"
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service
 
 - name: Remove unmanaged bareos-fd director configurations
   ansible.windows.win_file:
@@ -18,4 +18,4 @@
     - bareos-dir.conf
     - bareos-mon.conf
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service

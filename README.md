@@ -1,13 +1,13 @@
-# Ansible Galaxy role for install and configure Bareos File Daemon on Windows OS.
+# Ansible Galaxy role for install and configure Bareos-FD (ver. 22.0.4) on Windows Server.
 
 [![Galaxy Role](https://img.shields.io/badge/Ansible--Galaxy-leadlineit.win_bareos_fd-blue.svg?logo=ansible&logoColor=white)](https://galaxy.ansible.com/leadlineit/win_bareos_fd/)
 
-This role helps to install and configure Bareos File Daemon on Windows OS(Server2016/2019/2022 or 8/10).
+This role helps to install and configure Bareos-FD (ver. 22.0.4) on Windows Server (2008R2/2012R2/2016/2019/2022).
 
 Requirements
 ------------
 
-This role requires Ansible 2.9 or higher.
+This role requires Ansible 2.11 or higher.
 
 Role Variables
 --------------
@@ -16,7 +16,6 @@ The variables that can be passed to this role and a brief description about them
 
 ```yaml
 ---
-bareos_release: 21
 bareos_tls_path_win: C:\ProgramData\Bareos\tls
 bareos_tls_certs: your.bareos.dir.com
 bareos_tls_path: /etc/bareos/tls
@@ -46,7 +45,7 @@ bareos_fd:
 ```
 
 The variables above are optional. They don't have a default value, so if you don't define them - tasks using them will be skipped. 
-You can set only some of them, or not set at all (in this case, you will simply install Bareos Storage with default configuration).
+You can set only some of them, or not set at all (in this case, you will simply install Bareos-FD with default configuration).
 Also, you can use HashiCorp Vault for store client certificates (when you use Bareos with TLS)
 Variable for this (optional too):
 

@@ -11,4 +11,4 @@
     group: bareos
   with_items: "{{ bareos_dir.fileset }}"
   notify:
-    - reload bareos-dir service
+    - Reload bareos-dir service

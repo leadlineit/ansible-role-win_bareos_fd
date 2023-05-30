@@ -13,7 +13,7 @@
     dest: C:\ProgramData\Bareos\bareos-fd.d\client\{{ item.name }}-fd.conf
   with_items: "{{ bareos_fd.client }}"
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service
 
 - name: Remove unmanaged bareos-fd client configurations
   ansible.windows.win_file:
@@ -23,7 +23,7 @@
     - myself.conf.orig
     - myself.conf
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service
 
 - name: Remove default Windows firewall rule for bareos-fd input connections
   community.windows.win_firewall_rule:

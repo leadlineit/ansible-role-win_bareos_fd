@@ -5,7 +5,7 @@
     dest: C:\ProgramData\Bareos\bareos-fd.d\messages\{{ item.name }}.conf
   with_items: "{{ bareos_fd.messages }}"
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service
 
 - name: Remove unmanaged bareos-fd messages configurations
   ansible.windows.win_file:
@@ -15,4 +15,4 @@
     - Standard.conf
     - Standard.conf.orig
   notify:
-    - restart bareos-fd service
+    - Restart bareos-fd service

@@ -1,5 +1,4 @@
 ---
-bareos_release: 21
 bareos_tls_path_win: C:\ProgramData\Bareos\tls
 bareos_tls_certs: your.bareos.dir.com
 bareos_tls_path: /etc/bareos/tls
