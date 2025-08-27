@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/leadlineit/ansible-role-win_bareos_fd/actions/workflows/ansible-galaxy-ci.yml/badge.svg)
 [![Galaxy Role](https://img.shields.io/badge/Ansible--Galaxy-leadlineit.win_bareos_fd-blue.svg?logo=ansible&logoColor=white)](https://galaxy.ansible.com/leadlineit/win_bareos_fd/)
 
-This role helps to install and configure Bareos-FD (ver. 22.0.4) on Windows Server (2008R2/2012R2/2016/2019/2022).
+This role helps to install and configure Bareos-FD (ver. 24.0) on Windows Server (2008R2/2012R2/2016/2019/2022).
 
 Requirements
 ------------
