@@ -7,6 +7,6 @@
     arguments: /S
     state: present
   with_items:
-    - "https://download.bareos.org/current/windows/winbareos-22.0.4~pre114.45a6341f6-release-64-bit.exe"
+    - "https://download.bareos.org/current/windows/Bareos-24.0.4~pre30.dd9a00734-x64-Release.exe"
   notify:
     - Restart bareos-fd service

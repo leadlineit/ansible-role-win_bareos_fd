@@ -1,37 +1,48 @@
 ---
-- name: Checking if client certificate are exist
-  ansible.windows.win_uri:
+- name: Checking if client certificate exists
+  ansible.builtin.uri:
     url: "{{ bareos_fd.hashicorp_vault.address }}/v1/{{ item.client }}/data/hosts/{{ item.name }}/bareos-certs"
     headers:
       X-Vault-Token: "{{ bareos_fd.hashicorp_vault.token }}"
       Content-Type: "application/json"
+    return_content: yes
+    status_code: [200, 404, 403]
   register: cnout
   failed_when: false
   loop: "{{ bareos_fd.hashicorp_vault.clients }}"
+  delegate_to: localhost
+  become: false
 
 - name: Create list for status code
   ansible.builtin.set_fact:
-    stat_list: "{{ stat_list | default([]) + [{'cname': item.item.name, 'status': item.status_code, 'client': item.item.client, 'role': item.item.role, 'ttl': item.item.ttl}] }}"
+    stat_list: "{{ stat_list | default([]) + [{
+        'cname': item.item.name,
+        'status': item.status,
+        'client': item.item.client,
+        'role': item.item.role,
+        'ttl': item.item.ttl
+      }] }}"
   with_items: "{{ cnout.results }}"
   loop_control:
-    label: 
-      - "{{ item.item.name }}"
-      - "{{ item.status_code }}"
+    label: "{{ item.status }}"
 
 - name: Generate client certificate's with Hashicorp Vault
-  ansible.windows.win_uri:
+  ansible.builtin.uri:
     url: "{{ bareos_fd.hashicorp_vault.address }}/v1/{{ bareos_fd.hashicorp_vault.path }}/issue/{{ item.role }}"
-    url_method: POST
+    method: POST
     headers:
       X-Vault-Token: "{{ bareos_fd.hashicorp_vault.token }}"
       Content-Type: "application/json"
     return_content: yes
+    body_format: json
     body:
       common_name: "{{ item.cname }}"
       ttl: "{{ item.ttl }}"
   when: item.status == 404
   with_items: "{{ stat_list }}"
   register: output
+  delegate_to: localhost
+  become: false
 
 - name: Create list for serial key
   ansible.builtin.set_fact:
@@ -39,8 +50,7 @@
   when: item.item.status == 404
   with_items: "{{ output.results }}"
   loop_control:
-    label:
-      - "{{ item.item.cname }}"
+    label: "{{ item.item.cname }}"
 
 - name: Save client certificate to Bareos TLS directory (bareos_tls_path_win)
   ansible.windows.win_copy:
@@ -52,8 +62,7 @@
   with_items: "{{ cert_list }}"
   run_once: true
   loop_control:
-    label: 
-      - "{{ item.cname }}.crt"
+    label: "{{ item.cname }}.crt"
 
 - name: Save client private key to Bareos TLS directory (bareos_tls_path_win)
   ansible.windows.win_copy:
@@ -65,16 +74,16 @@
   with_items: "{{ cert_list }}"
   run_once: true
   loop_control:
-    label: 
-      - "{{ item.cname }}.key"
+    label: "{{ item.cname }}.key"
 
 - name: Add client serial number to Hashicorp Vault
-  ansible.windows.win_uri:
+  ansible.builtin.uri:
     url: "{{ bareos_fd.hashicorp_vault.address }}/v1/{{ item.client }}/data/hosts/{{ item.cname }}/bareos-certs"
-    url_method: POST
+    method: POST
     headers:
       X-Vault-Token: "{{ bareos_fd.hashicorp_vault.token }}"
       Content-Type: "application/json"
+    body_format: json
     body:
       data:
         cname: "{{ item.cname }}"
@@ -84,6 +93,6 @@
     - item.status == 404
   with_items: "{{ cert_list }}"
   loop_control:
-    label: 
-      - "{{ item.cname }}"
-      - "{{ item.serial_number }}"
+    label: "{{ item.cname }}"
+  delegate_to: localhost
+  become: false
